@@ -1,35 +1,36 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {useEffect, useState} from "react";
+import axios from "./utils/axios.ts";
 
+// interface Headlines {
+//     articles: any[]
+// }
 
 function App() {
-    const [count, setCount] = useState(0)
+    const [headlines, setHeadlines] = useState<any>(null)
+
+    useEffect(() => {
+        // IIFE
+        (async () => {
+            try {
+                const response = await axios.get('/headlines')
+                console.log(JSON.parse(response.data))
+                setHeadlines(JSON.parse(response.data)?.articles)
+            } catch (err) {
+                console.error(err)
+            }
+        })()
+    }, []);
 
     return (
-        <>
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-            </div>
-            <p className="text-5xl font-mono hover:font-serif">Vite + React</p>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p className='font-seri'>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-        </>
+        <div className='h-screen bg-white dark:bg-slate-400'>
+            {headlines ?
+                headlines.map(({publishedAt, title, url, urlToImage}: any) =>
+                    <a href={url} target='_blank'>
+                        <img key={publishedAt} src={urlToImage} alt={title}/>
+                    </a>) :
+                <p>Loading .....</p>}
+        </div>
     )
 }
 
