@@ -2,10 +2,6 @@ import './App.css'
 import {useEffect, useState} from "react";
 import axios from "./utils/axios.ts";
 
-// interface Headlines {
-//     articles: any[]
-// }
-
 function App() {
     const [headlines, setHeadlines] = useState<any>(null)
 
@@ -23,12 +19,14 @@ function App() {
     }, []);
 
     return (
-        <div className='h-screen bg-white dark:bg-slate-400'>
+        <div>
             {headlines ?
                 headlines.map(({publishedAt, title, url, urlToImage}: any) =>
-                    <a href={url} target='_blank'>
-                        <img key={publishedAt} src={urlToImage} alt={title}/>
-                    </a>) :
+                    <div className='container'>
+                        <a href={url} target='_blank'>
+                            <img key={publishedAt} src={urlToImage} alt={title}/>
+                        </a>
+                    </div>) :
                 <p>Loading .....</p>}
         </div>
     )
