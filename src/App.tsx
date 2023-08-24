@@ -19,12 +19,17 @@ function App() {
     }, []);
 
     return (
-        <div>
+        <div className='tile is-ancestor is-flex is-flex-wrap-wrap box'>
             {headlines ?
-                headlines.map(({publishedAt, title, url, urlToImage}: any) =>
-                    <div className='container'>
-                        <a href={url} target='_blank'>
-                            <img key={publishedAt} src={urlToImage} alt={title}/>
+                headlines.map(({publishedAt, title, url, urlToImage, description}: any) =>
+                    <div className='tile is-parent'>
+                        <a href={url} target='_blank' className='tile is-child box notification is-info is-light'>
+                            <article>
+                                <figure className='image is-128x128'>
+                                    <img key={publishedAt} src={urlToImage} alt={title}/>
+                                </figure>
+                                <p className='is-size-7'>{description}</p>
+                            </article>
                         </a>
                     </div>) :
                 <p>Loading .....</p>}
